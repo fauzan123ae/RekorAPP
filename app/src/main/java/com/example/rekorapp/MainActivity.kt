@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -39,10 +40,24 @@ class MainActivity : AppCompatActivity() {
         viewModel.scoreA.observe(this, Observer { skorA.text = it.toString() })
         viewModel.scoreB.observe(this, Observer { skorB.text = it.toString() })
 
+
+        viewModel.winner.observe(this, Observer { winner ->
+            winner?.let { showWinnerDialog(it) }
+        })
+
         buttonPlus1A.setOnClickListener { viewModel.incrementSkorA(1) }
         buttonPlus2A.setOnClickListener { viewModel.incrementSkorA(2) }
         buttonPlus1B.setOnClickListener { viewModel.incrementSkorB(1) }
         buttonPlus2B.setOnClickListener { viewModel.incrementSkorB(2) }
         buttonReset.setOnClickListener { viewModel.resetSkor() }
+    }
+
+    private fun showWinnerDialog(winner: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Permainan Selesai!")
+            .setMessage(winner)
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .setCancelable(false)
+            .show()
     }
 }
