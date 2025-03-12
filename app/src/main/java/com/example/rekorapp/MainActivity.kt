@@ -1,6 +1,5 @@
 package com.example.rekorapp
 
-
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -9,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,32 +36,13 @@ class MainActivity : AppCompatActivity() {
         val buttonPlus2B: Button = findViewById(R.id.tambah2b)
         val buttonReset: Button = findViewById(R.id.btnreset)
 
-        updateScores()
+        viewModel.scoreA.observe(this, Observer { skorA.text = it.toString() })
+        viewModel.scoreB.observe(this, Observer { skorB.text = it.toString() })
 
-        buttonPlus1A.setOnClickListener { updateScoreA(1) }
-        buttonPlus2A.setOnClickListener { updateScoreA(2) }
-        buttonPlus1B.setOnClickListener { updateScoreB(1) }
-        buttonPlus2B.setOnClickListener { updateScoreB(2) }
-        buttonReset.setOnClickListener { resetScores() }
-    }
-
-    private fun updateScoreA(points: Int) {
-        viewModel.incrementSkorA(points)
-        updateScores()
-    }
-
-    private fun updateScoreB(points: Int) {
-        viewModel.incrementSkorB(points)
-        updateScores()
-    }
-
-    private fun resetScores() {
-        viewModel.resetSkor()
-        updateScores()
-    }
-
-    private fun updateScores() {
-        skorA.text = viewModel.scoreA.toString()
-        skorB.text = viewModel.scoreB.toString()
+        buttonPlus1A.setOnClickListener { viewModel.incrementSkorA(1) }
+        buttonPlus2A.setOnClickListener { viewModel.incrementSkorA(2) }
+        buttonPlus1B.setOnClickListener { viewModel.incrementSkorB(1) }
+        buttonPlus2B.setOnClickListener { viewModel.incrementSkorB(2) }
+        buttonReset.setOnClickListener { viewModel.resetSkor() }
     }
 }
